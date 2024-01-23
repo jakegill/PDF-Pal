@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { CircleUserRound, Menu, ShoppingCart } from "lucide-react";
+import { CircleUserRound, Menu } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -9,9 +9,9 @@ export default function Navbar() {
 	const [showMenu, setShowMenu] = useState(false);
 
 	return (
-		<section className='hidden w-full md:flex  px-8 md:px-20  items-center space-between h-[11vh] border-b-[1px] bg-slate-50 border-zinc-300 sticky inset-x-0 top-0 z-20'>
+		<section className='w-full flex  px-8 md:px-20  items-center space-between h-[11vh] border-b-[1px] bg-slate-50 border-zinc-300 sticky inset-x-0 top-0 z-20'>
 			<div className='flex items-center justify-between w-full'>
-				<h2 className='md:text-xl font-bold text-blue-600 text-sm'>PDF Pal</h2>
+				<h2 className='md:text-xl font-bold text-blue-600 text-md'>PDF Pal</h2>
 				<div className='flex items-center gap-4'>
 					<div className='relative'>
 						<div

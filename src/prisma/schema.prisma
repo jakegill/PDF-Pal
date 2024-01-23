@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -13,7 +13,33 @@ model User {
   firstName     String
   lastName      String
   password      String
+  
   email         String?   @unique
   emailVerified DateTime?
-  image         String?
+
+  File File[]
+
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @unique @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+}
+
+enum UploadStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+model File {
+  id           String       @id @default(cuid())
+  name         String
+  uploadStatus UploadStatus @default(PENDING)
+  url          String?
+  key          String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  User         User?        @relation(fields: [userId], references: [id])
+  userId       String?
 }
