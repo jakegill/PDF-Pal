@@ -50,7 +50,9 @@ export default function RegisterForm() {
 		const { confirmPassword, ...user } = formData;
 		try {
 			const res = await registerUser(user);
-			router.push("/auth/login");
+			if (res?.id) {
+				router.push("/auth/signin");
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -174,7 +176,7 @@ export default function RegisterForm() {
 						<p className='text-sm text-zinc-700'>Already have an account?</p>
 						<Link
 							className='text-sm text-blue-600 underline'
-							href='/auth/login'
+							href='/auth/signin'
 						>
 							Sign in
 						</Link>
