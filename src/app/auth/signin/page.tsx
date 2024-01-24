@@ -1,9 +1,10 @@
 import SignInForm from "@/components/SignInForm" 
+import Navbar from "@/components/Navbar";
 
 export default function SignIn() {
     return (
         <div>
-            SignIn
+            <Navbar />
             <SignInForm />
         </div>
     );

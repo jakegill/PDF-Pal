@@ -1,18 +1,28 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { X } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { getFiles } from "@/lib/files";
 
 export default function Dashboard() {
-	const { data: session } = useSession();
-
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [files, setFiles] = useState([]);
+	const session = useSession();
+	
+	//Find all of the users
+	useEffect(() => {
+		if (session.data) {
+			getFiles(session.data.user.id).then((data) => {
+				setFiles(data);
+			});
+		}
+	}, [session.data]);
 
 	return (
 		<>
 			<Navbar />
-			<div className='h-[89vh] py-4 px-8 md:px-20'>
+			<div onClick={() => console.log(files)}className='h-[89vh] py-4 px-8 md:px-20'>
 				{/* Layout desktop*/}
 				<div className='md:flex justify-between'>
 					<h1 className='text-lg md:text-3xl font-semibold '>My PDFs</h1>
@@ -24,7 +34,9 @@ export default function Dashboard() {
 					</button>
 				</div>
 
-				<main className='h-[70vh] md:h-[75vh] bg-red-100'></main>
+				<main className='h-[70vh] md:h-[75vh] bg-red-100'>
+					
+				</main>
 
 				{/* Layout mobile */}
 				<div className='md:hidden h-[10vh] flex justify-center items-center'>
