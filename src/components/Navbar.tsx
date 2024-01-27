@@ -16,14 +16,14 @@ export default function Navbar() {
 					<div className='relative'>
 						<div
 							onClick={() => setShowMenu(!showMenu)}
-							className='cursor-pointer flex gap-3 items-center border-[0.5px] border-zinc-300 bg-white rounded-full hover:shadow-md p-2'
+							className='cursor-pointer flex gap-3 items-center border-[0.5px] border-zinc-300 bg-white rounded-full transition hover:shadow-md p-2'
 						>
 							<Menu size={24} />
 							<CircleUserRound size={30} />
 						</div>
 
 						{showMenu ? (
-							<div className='bg-white rounded-md shadow-lg p-3 absolute right-0 mt-2 text-sm'>
+							<div className='bg-white rounded-md transition shadow-lg p-3 absolute right-0 mt-2 text-sm'>
 								{session && session.user ? (
 									<div className='flex flex-col gap-2'>
 										<Link href='/dashboard/profile'>Profile</Link>
