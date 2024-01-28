@@ -11,7 +11,12 @@ export default function Navbar() {
 	return (
 		<section className='w-full flex  px-8 md:px-20  items-center space-between h-[11vh] border-b-[1px] bg-slate-50 border-zinc-300 sticky inset-x-0 top-0 z-20'>
 			<div className='flex items-center justify-between w-full'>
-				<h2 className='md:text-xl font-bold text-blue-600 text-md'>PDF Pal</h2>
+				<Link href='/dashboard'>
+					<h2 className='md:text-3xl font-bold text-md'>
+						<span className='text-blue-800'>Pdf</span>
+						<span className='text-blue-500'>Pal</span>
+					</h2>
+				</Link>
 				<div className='flex items-center gap-4'>
 					<div className='relative'>
 						<div

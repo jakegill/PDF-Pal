@@ -1,10 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import Dropzone from "react-dropzone";
 import { X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import FileCard from "@/components/FileCard";
-import { getFiles, deleteFile } from "@/lib/files";
+import { getFiles } from "@/lib/files";
 import type { File } from "@/lib/types";
 
 export default function Dashboard() {
@@ -22,10 +23,30 @@ export default function Dashboard() {
 	}, [session.data]);
 
 	//delete file callback
-    const handleFileDelete = (fileId: string) => {
-        const updatedFiles = files.filter(file => file.id !== fileId);
-        setFiles(updatedFiles);
-	}				
+	const handleFileDelete = (fileId: string) => {
+		const updatedFiles = files.filter((file) => file.id !== fileId);
+		setFiles(updatedFiles);
+	};
+
+	const UploadDropzone = () => {
+		return (
+			<Dropzone multiple={false}>
+				{({ getRootProps, getInputProps, acceptedFiles }) => (
+					<div {...getRootProps()} className='border border-dashed w-[70vw] h-[50vh] md:h-[40vh] md:w-[40vw]'>
+						<label
+							htmlFor='dropzone-file'
+							className='flex items-center justify-center h-full w-full'
+						>
+							<p className='text-zinc-700'>
+								Click to upload or{" "}
+								<span className='text-zinc-500'>drag and drop</span>
+							</p>
+						</label>
+					</div>
+				)}
+			</Dropzone>
+		);
+	};
 
 	return (
 		<>
@@ -47,9 +68,13 @@ export default function Dashboard() {
 
 				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
 					{files && files.length > 0 ? (
-						files.map((file) => <FileCard key={file.id} file={file} onDelete={handleFileDelete}/>)
+						files.map((file) => (
+							<FileCard key={file.id} file={file} onDelete={handleFileDelete} />
+						))
 					) : (
-						<div className="w-full h-full flex items-center justify-center md:col-span-3">No Files</div>
+						<div className='w-full h-full flex items-center justify-center md:col-span-3'>
+							No Files
+						</div>
 					)}
 				</main>
 
@@ -67,12 +92,15 @@ export default function Dashboard() {
 			{isDialogOpen && (
 				<div className='fixed z-30 top-0 left-0 w-full h-full flex items-center justify-center transition backdrop-blur-sm transition-opacity duration-300 ease-in-out'>
 					<dialog open className='rounded-lg p-4 bg-white shadow-md'>
-						<div className='flex gap-8'>
-							<h2 className='text-md mb-4'>Upload your PDF</h2>
-							<X
-								className='text-red-600 cursor-pointer'
-								onClick={() => setIsDialogOpen(false)}
-							/>
+						<div className='flex gap-2 flex-col'>
+							<div className='flex justify-between'>
+								<h2 className='text-md'>Upload your PDF</h2>
+								<X
+									className='text-red-600 cursor-pointer'
+									onClick={() => setIsDialogOpen(false)}
+								/>
+							</div>
+							<UploadDropzone />
 						</div>
 					</dialog>
 				</div>
