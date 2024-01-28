@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import FileCard from "@/components/FileCard";
-import { getFiles } from "@/lib/files";
+import { getFiles, deleteFile } from "@/lib/files";
 import type { File } from "@/lib/types";
 
 export default function Dashboard() {
@@ -20,6 +20,12 @@ export default function Dashboard() {
 			});
 		}
 	}, [session.data]);
+
+	//delete file callback
+    const handleFileDelete = (fileId: string) => {
+        const updatedFiles = files.filter(file => file.id !== fileId);
+        setFiles(updatedFiles);
+	}				
 
 	return (
 		<>
@@ -39,9 +45,9 @@ export default function Dashboard() {
 					</button>
 				</div>
 
-				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 md:grid-cols-3 gap-y-3 md:gap-x-3 overflow-y-auto'>
+				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
 					{files && files.length > 0 ? (
-						files.map((file) => <FileCard key={file.id} file={file} />)
+						files.map((file) => <FileCard key={file.id} file={file} onDelete={handleFileDelete}/>)
 					) : (
 						<div className="w-full h-full flex items-center justify-center md:col-span-3">No Files</div>
 					)}
