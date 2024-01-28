@@ -1,16 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Dropzone from "react-dropzone";
 import { X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import FileCard from "@/components/FileCard";
+import UploadDropzone from "@/components/UploadDropzone";
 import { getFiles } from "@/lib/files";
-import type { File } from "@/lib/types";
+import type { PdfFile } from "@/lib/types";
 
 export default function Dashboard() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [files, setFiles] = useState<File[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [files, setFiles] = useState<PdfFile[]>([]);
 	const session = useSession();
 
 	//Get all of the user's files
@@ -28,33 +29,10 @@ export default function Dashboard() {
 		setFiles(updatedFiles);
 	};
 
-	const UploadDropzone = () => {
-		return (
-			<Dropzone multiple={false}>
-				{({ getRootProps, getInputProps, acceptedFiles }) => (
-					<div {...getRootProps()} className='border border-dashed w-[70vw] h-[50vh] md:h-[40vh] md:w-[40vw]'>
-						<label
-							htmlFor='dropzone-file'
-							className='flex items-center justify-center h-full w-full'
-						>
-							<p className='text-zinc-700'>
-								Click to upload or{" "}
-								<span className='text-zinc-500'>drag and drop</span>
-							</p>
-						</label>
-					</div>
-				)}
-			</Dropzone>
-		);
-	};
-
 	return (
 		<>
 			<Navbar />
-			<div
-				onClick={() => console.log(files)}
-				className='h-[89vh] py-4 px-8 md:px-20'
-			>
+			<div className='h-[89vh] py-4 px-8 md:px-20'>
 				{/* Layout desktop*/}
 				<div className='md:flex justify-between py-4'>
 					<h1 className='text-lg md:text-3xl font-semibold '>My PDFs</h1>
@@ -82,7 +60,7 @@ export default function Dashboard() {
 				<div className='md:hidden h-[10vh] flex justify-center items-center'>
 					<button
 						onClick={() => setIsDialogOpen(true)}
-						className='px-8 py-3 bg-blue-800 hover:bg-blue-700 transition cursor-pointer text-slate-200 font-semibold text-ld rounded-md hover:shadow-md'
+						className='px-8 py-3 bg-blue-800 hover:bg-blue-700 transition cursor-pointer text-slate-200 rounded-md hover:shadow-md'
 					>
 						Upload PDF
 					</button>

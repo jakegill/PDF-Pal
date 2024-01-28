@@ -1,11 +1,11 @@
 //for dashboard
 "use client";
-import type { File } from "@/lib/types";
+import type { PdfFile } from "@/lib/types";
 import { Trash2 } from "lucide-react";
 import { deleteFile } from "@/lib/files";
 
 interface FileCardProps {
-	file: File;
+	file: PdfFile;
 	onDelete: (fileId: string) => void;
 }
 

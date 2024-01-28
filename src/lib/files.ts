@@ -8,7 +8,6 @@ export async function getFiles(userId: string) {
         const res = await fetch(`http://localhost:3000/api/files/user/${userId}`)
         if (res.ok) {
             const data = await res.json();
-            console.log(data);
             return data
         } else {
             throw new Error('Error fetching files.')

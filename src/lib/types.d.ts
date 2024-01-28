@@ -19,7 +19,7 @@ export enum UploadStatus {
 	FAILED = "FAILED",
 }
 
-export interface File {
+export interface PdfFile {
 	id: string;
 	name: string;
 	uploadStatus: UploadStatus;
