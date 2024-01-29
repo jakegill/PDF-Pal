@@ -19,4 +19,22 @@ export async function DELETE (
     }
 }
 
+export async function GET (
+    request: Request,
+    { params }: { params: { fileId: string } }
+) {
+    try {
+        const fileId = params.fileId;
+        const file = await prisma.file.findUnique({
+            where: {
+                id: fileId,
+            },
+        });
+        return NextResponse.json(file);
+    } catch (e) {
+        return NextResponse.error();
+    }
+}
+
+
 

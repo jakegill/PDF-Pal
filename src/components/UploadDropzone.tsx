@@ -2,7 +2,6 @@
 import Dropzone from "react-dropzone";
 import { File } from "lucide-react";
 import { useState } from "react";
-import { uploadPdfToBucket } from "@/lib/aws";
 
 export default function UploadDropzone() {
 

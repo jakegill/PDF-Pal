@@ -29,11 +29,13 @@ export async function POST(request: Request, { params }: { params: { filename: s
     try {
         const pdfFile = await request.arrayBuffer();
         const awsResponse = await uploadPdfToBucket(params.filename, new Blob([pdfFile]));
+        const encodedFilename = encodeURIComponent(params.filename);
         if (JSON.parse(awsResponse as string).status === 200) {
             const prismaResponse = await prisma.file.create({
                 data: {
                     name: params.filename,
                     userId: session?.user.id,
+                    url: `https://pdf-pal.s3.amazonaws.com/${encodedFilename}`,
                 },
             });
         } else {

@@ -27,7 +27,7 @@ export default function FileCard({ file, onDelete }: FileCardProps) {
 
 	const handleCardClick = (event: any) => {
 		if (!event.target.classList.contains("delete-btn")) {
-			window.location.href = `/dashboard/${file.id}`;
+			window.location.href = `/dashboard/${file.name}`;
 		}
 	};
 
