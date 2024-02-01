@@ -29,7 +29,7 @@ model User {
 enum UploadStatus {
   PENDING
   PROCESSING
-  DONE
+  SUCCESS
   FAILED
 }
 

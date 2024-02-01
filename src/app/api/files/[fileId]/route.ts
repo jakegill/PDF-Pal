@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
+//TODO: delete from s3 bucket as well.
 export async function DELETE (
-    request: Request,
+    request: NextRequest,
     { params }: { params: { fileId: string } }
 ) {
     try {
@@ -19,7 +20,7 @@ export async function DELETE (
 }
 
 export async function GET (
-    request: Request,
+    request: NextRequest,
     { params }: { params: { fileId: string } }
 ) {
     try {

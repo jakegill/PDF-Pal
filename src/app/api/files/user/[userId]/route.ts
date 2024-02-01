@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
+//Get all the files to display on dashboard.
 export async function GET(
-	request: Request,
+	request: NextRequest,
 	{ params }: { params: { id: string } }
 ) {
 	try {
@@ -16,10 +17,4 @@ export async function GET(
 	} catch (e) {
 		return NextResponse.error();
 	}
-}
-
-export async function POST(request: Request) {
-	const json = await request.json();
-	const created = await prisma.file.create({ data: json });
-	return new NextResponse(JSON.stringify(created), { status: 201 });
 }
