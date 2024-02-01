@@ -27,7 +27,7 @@ export default function FileCard({ file, onDelete }: FileCardProps) {
 
 	const handleCardClick = (event: any) => {
 		if (!event.target.classList.contains("delete-btn")) {
-			window.location.href = `/dashboard/${file.name}`;
+			window.location.href = `/dashboard/${file.id}`;
 		}
 	};
 
@@ -36,7 +36,7 @@ export default function FileCard({ file, onDelete }: FileCardProps) {
 			onClick={handleCardClick}
 			className='h-[16.5vh] md:h-[16vh] cursor-pointer flex flex-col p-2 bg-white-100 border-[1px] border-zinc-300 hover:shadow-lg transition rounded-md'
 		>
-			<h2 className='md:text-lg font-semibold px-2 py-3 border-b-[0.5px] border-zinc-300'>
+			<h2 className='truncate md:text-lg font-semibold px-2 py-3 border-b-[0.5px] border-zinc-300'>
 				{file.name}
 			</h2>
 			<div className='flex justify-between py-3 px-2 items-center'>
