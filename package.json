@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@pinecone-database/pinecone": "^2.0.1",
     "@prisma/client": "^5.8.1",
     "@react-pdf/renderer": "^3.3.4",
     "@trpc/client": "^11.0.0-next-beta.228",
@@ -28,6 +29,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.49.3",
     "react-pdf": "^7.7.0",
+    "react-query": "^3.39.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
