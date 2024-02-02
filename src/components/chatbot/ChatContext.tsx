@@ -1,64 +1,69 @@
+"use client";
 import { createContext, useState } from "react";
 import { useMutation } from "react-query";
 
 type ChatStream = {
-    addMessage: () => void;
-    message: string;
-    handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    isLoading: boolean;
+	addMessage: () => void;
+	message: string;
+	handleInputChange: (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => void;
+	isLoading: boolean;
 };
 
 export const ChatContext = createContext<ChatStream>({
-    addMessage: () => {},
-    message: "",
-    handleInputChange: () => {},
-    isLoading: false,
+	addMessage: () => {},
+	message: "",
+	handleInputChange: () => {},
+	isLoading: false,
 });
 
 interface ChatProviderProps {
-    fileId: string;
-    children: React.ReactNode;
+	fileId: string;
+	children: React.ReactNode;
 }
 
-export const ChatProvider = ({ fileId, children }: ChatProviderProps) => {
-    const [message, setMessage] = useState<string>("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+export const ChatContextProvider = ({
+	fileId,
+	children,
+}: ChatProviderProps) => {
+	const [message, setMessage] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const sendMessage = async () => {
-        const response = await fetch(`/api/message`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ fileId, message }),
-        });
+	const { mutate: sendMessage } = useMutation({
+		mutationFn: async ({ message }: { message: string }) => {
+			const response = await fetch("/api/message", {
+				method: "POST",
+				body: JSON.stringify({
+					fileId,
+					message,
+				}),
+			});
 
-        if (!response.ok) {
-            throw new Error("Failed to send the message.");
-        }
-        return response.json();
-    };
+			if (!response.ok) {
+				throw new Error("Failed to send message");
+			}
 
-    const { mutate } = useMutation(sendMessage);
+			return response.body;
+		},
+	});
 
-    const addMessage = () => {
-        mutate();
-    };
+	const addMessage = () => {
+		sendMessage({ message });
+        setMessage("");                    
+	};
 
-    const value = {
-        addMessage,
-        message,
-        handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(event.target.value),
-        isLoading,
-    };
+	const value = {
+		addMessage,
+		message,
+		handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+			setMessage(event.target.value),
+		isLoading,
+	};
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setMessage(event.target.value);
-    }
+	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setMessage(event.target.value);
+	};
 
-    return (
-        <ChatContext.Provider value={value}>
-            {children}
-        </ChatContext.Provider>
-    );
+	return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };

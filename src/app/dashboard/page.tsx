@@ -8,6 +8,8 @@ import UploadDropzone from "@/components/UploadDropzone";
 import { getFiles } from "@/lib/files";
 import type { PdfFile } from "@/lib/types";
 
+//TODO add a loading state for getting users files & uploading files...
+
 export default function Dashboard() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);

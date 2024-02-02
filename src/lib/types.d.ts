@@ -15,7 +15,7 @@ declare module "next-auth/jwt" {
 export enum UploadStatus {
 	PENDING = "PENDING",
 	PROCESSING = "PROCESSING",
-	DONE = "DONE",
+	SUCCESS = "SUCCESS",
 	FAILED = "FAILED",
 }
 

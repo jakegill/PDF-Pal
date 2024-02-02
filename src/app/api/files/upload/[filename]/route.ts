@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getSession } from "next-auth/react";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { OpenAIEmbeddings } from "@langchain/openai"
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { pinecone } from "@/lib/pinecone";
 
@@ -88,9 +88,7 @@ export async function POST(
 						uploadStatus: "SUCCESS",
 					},
 				});
-
 			} catch (e) {
-				
 				const updateUploadStatus = await prisma.file.update({
 					where: {
 						id: prismaResponse.id,
@@ -104,7 +102,6 @@ export async function POST(
 		} else {
 			return NextResponse.error();
 		}
-
 		return NextResponse.json(pdfFile);
 	} catch (e) {
 		return NextResponse.error();
