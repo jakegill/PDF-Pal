@@ -1,17 +1,21 @@
 import { NextRequest } from "next/server";
 import { chatInputValidator } from "@/lib/chatInputValidator";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { pinecone } from "@/lib/pinecone";
 import { openai } from "@/lib/openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(request: NextRequest) {
-	const session = await getSession();
+	const session = await getServerSession(authOptions)
+
 	const body = await request.json();
 	const { fileId, message } = chatInputValidator.parse(body);
+
+
 	const file = await prisma.file.findUnique({
 		where: {
 			id: fileId,

@@ -12,9 +12,7 @@ export default function PdfView() {
 	const [currentPageNumber, setCurrentPageNumber] = useState(1);
 	const [numPages, setNumPages] = useState<number>(0);
 
-	const fileId = window.location.pathname.split("/")[2];
-
-	const getUrl = async () => {
+	const getUrl = async (fileId: string) => {
 		try {
 			const response = await fetch(`/api/files/${fileId}`);
 			const data = await response.json();
@@ -28,7 +26,8 @@ export default function PdfView() {
 
 	useEffect(() => {
 		(async () => {
-			await getUrl();
+			const fileId = window.location.pathname.split("/")[2];
+			await getUrl(fileId);
 		})();
 	}, []);
 

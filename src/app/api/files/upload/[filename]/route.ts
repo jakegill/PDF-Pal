@@ -1,10 +1,11 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { pinecone } from "@/lib/pinecone";
+import { authOptions } from "../../../auth/[...nextauth]/route";
 
 //aws endpoint https://z5tc4i45mf.execute-api.us-east-1.amazonaws.com/second/pdf-pal/{filename.pdf}
 
@@ -39,7 +40,7 @@ export async function POST(
 	request: Request,
 	{ params }: { params: { filename: string } }
 ) {
-	const session = await getSession();
+	const session = await getServerSession(authOptions)
 
 	try {
 		//Upload pdf file to S3.
