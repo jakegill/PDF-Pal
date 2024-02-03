@@ -1,8 +1,10 @@
-import { getSession } from "next-auth/react";
+"use server"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export async function getFiles(userId: string) {
     try {
-        const session = await getSession();
+        const session = await getServerSession(authOptions);
         if (session?.user.id !== userId) throw new Error('Unauthorized');
         
         const res = await fetch(`http://localhost:3000/api/files/user/${userId}`)

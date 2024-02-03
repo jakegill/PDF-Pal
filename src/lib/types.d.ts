@@ -29,3 +29,28 @@ export interface PdfFile {
 	updatedAt: string;
 	userId?: string;
 }
+
+interface Message {
+	id: string;
+	text: string;
+	isUserMessage: boolean;
+	userId: string;
+	fileId: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+type ChatStream = {
+	addMessage: () => void;
+	message: string;
+	handleInputChange: (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => void;
+	isLoading: boolean;
+	prevMessages: Message[];
+};
+
+interface ChatProviderProps {
+	fileId: string;
+	children: React.ReactNode;
+}

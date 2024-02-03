@@ -10,11 +10,10 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(request: NextRequest) {
-	const session = await getServerSession(authOptions)
+	const session = await getServerSession(authOptions);
 
 	const body = await request.json();
 	const { fileId, message } = chatInputValidator.parse(body);
-
 
 	const file = await prisma.file.findUnique({
 		where: {
