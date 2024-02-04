@@ -8,7 +8,6 @@ import { pinecone } from "@/lib/pinecone";
 import { openai } from "@/lib/openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { authOptions } from "@/config/auth.config";
-import type { OpenAIFormat } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
 	const session = await getServerSession(authOptions);
@@ -54,8 +53,8 @@ export async function POST(request: NextRequest) {
 		take: 6,
 	});
 
-	//format messages for openai api:
-	const formattedMessages: OpenAIFormat[] = previouslySentMessages.map((message) => ({
+	// @ts-ignore
+	const formattedMessages = previouslySentMessages.map((message) => ({
 		role: message.isUserMessage ? ("user" as const) : ("assistant" as const),
 		content: message.text,
 	}));

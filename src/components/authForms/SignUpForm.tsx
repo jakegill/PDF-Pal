@@ -60,9 +60,9 @@ export default function RegisterForm() {
 			setIsLoading(false);
 		} catch (error: any) {
 			console.log(error);
-			setError("Invalid email or password.");
 			setIsLoading(false);
 		}
+		setError("Invalid email or password.");
 	};
 
 	return (
