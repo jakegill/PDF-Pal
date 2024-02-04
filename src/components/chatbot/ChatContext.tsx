@@ -21,17 +21,16 @@ export const ChatContextProvider = ({
 	const [prevMessages, setPrevMessages] = useState<Message[]>([]);
 
 	useEffect(() => {
-		const fetchPrevMessages = async () => { 
+		const fetchPrevMessages = async () => {
 			try {
-			  const fetchedMessages = await getMessages(fileId);
-			  console.log("fetch", fetchedMessages);
-			  setPrevMessages(fetchedMessages); 
+				const fetchedMessages = await getMessages(fileId);
+				setPrevMessages(fetchedMessages);
 			} catch (error) {
 				console.log(error);
 			}
-		  };
+		};
 		fetchPrevMessages();
-	},[])
+	}, []);
 
 	const { mutate: sendMessage } = useMutation({
 		mutationFn: async ({ message }: { message: string }) => {
@@ -42,22 +41,31 @@ export const ChatContextProvider = ({
 					message,
 				}),
 			});
-
 			if (!response.ok) {
 				throw new Error("Failed to send message");
 			}
-
 			return response.body;
 		},
 		onMutate: async ({ message }) => {
 			if (message.trim()) {
 				setPrevMessages((currentMessages) => [
-					
 					{
-						id: Date.now().toString(), // Temporary ID; replace with server-assigned ID later if needed
+						id: Date.now().toString(),
 						text: message,
-						isUserMessage: true, // Assuming all messages sent through this form are user messages
-						userId: "", // Add the missing properties
+						isUserMessage: true,
+						userId: "",
+						fileId: "",
+						createdAt: "",
+						updatedAt: "",
+					},
+					...currentMessages,
+				]);
+				setPrevMessages((currentMessages) => [
+					{
+						id: "ai-temp-response",
+						text: "Thinking...",
+						isUserMessage: false,
+						userId: "",
 						fileId: "",
 						createdAt: "",
 						updatedAt: "",
@@ -65,12 +73,27 @@ export const ChatContextProvider = ({
 					...currentMessages,
 				]);
 			}
-			setMessage(""); // Clear the input field
+			setMessage("");
+		},
+		onSuccess: async (stream) => {
+			const reader = stream?.getReader();
+			const decoder = new TextDecoder();
+			let done = false;
+			let accResponse = "";
+			while (!done) {
+				const { value, done: doneReading } = await reader.read();
+				done = doneReading;
+				const chunk = decoder.decode(value, { stream: true });
+				accResponse += chunk;
+				setPrevMessages(prev => prev.map(msg => msg.id === 'ai-temp-response' ? { ...msg, text: accResponse } : msg));
+			}
 		},
 	});
 
 	const addMessage = () => {
-		sendMessage({ message });
+		if (message.trim()) {
+			sendMessage({ message });
+		}
 	};
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
