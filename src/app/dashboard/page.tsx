@@ -8,14 +8,12 @@ import UploadDropzone from "@/components/UploadDropzone";
 import { getFiles } from "@/lib/files";
 import type { PdfFile } from "@/lib/types";
 
-
 export default function Dashboard() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [files, setFiles] = useState<PdfFile[]>([]);
-	const session = useSession();
-	console.log(session);
-	//Get all of the user's files
+	const session = useSession();;
+	
 	useEffect(() => {
 		setIsLoading(true);
 		if (session.data) {
@@ -23,7 +21,7 @@ export default function Dashboard() {
 				setFiles(data);
 			});
 			setIsLoading(false);
-		} 
+		}
 	}, [session.data]);
 
 	//delete file callback
@@ -47,14 +45,21 @@ export default function Dashboard() {
 					</button>
 				</div>
 
-				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 grid-rows-auto md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
+				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 auto-rows-[16.5vh] md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
 					{files && files.length > 0 ? (
 						files.map((file) => (
 							<FileCard key={file.id} file={file} onDelete={handleFileDelete} />
 						))
 					) : (
 						<div className='w-full h-full flex items-center justify-center md:col-span-3'>
-							<Loader2 className={"text-blue-600 animate-spin h-[20vh] w-[20vw] md:h-[10vh] md:w-[10vw] md:mt-[10vh]"}/>
+							<div className="flex flex-col justify-center items-center">
+								<p className="text-zinc-700">Retrieving your saved files.</p>
+								<Loader2
+									className={
+										"text-blue-600 animate-spin h-[20vh] w-[20vw] md:h-[10vh] md:w-[10vw] md:mt-[10vh]"
+									}
+								/>
+							</div>
 						</div>
 					)}
 				</main>

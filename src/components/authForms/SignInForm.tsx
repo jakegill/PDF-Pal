@@ -43,10 +43,10 @@ export default function LoginForm() {
 				router.push("/dashboard");
 			}
 			setIsLoading(false);
-			setError("Invalid email or password.");
 		} catch (error) {
 			console.log(error);
 		}
+		setError("Invalid email or password");
 	};
 
 	return (

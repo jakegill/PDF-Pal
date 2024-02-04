@@ -11,7 +11,7 @@ export default function Navbar() {
 	return (
 		<section className='w-full flex  px-8 md:px-20  items-center space-between h-[11vh] border-b-[1px] bg-slate-50 border-zinc-300 sticky inset-x-0 top-0 z-20'>
 			<div className='flex items-center justify-between w-full'>
-				<Link href='/dashboard'>
+				<Link href='/'>
 					<h2 className='md:text-3xl font-bold text-md'>
 						<span className='text-blue-800'>Pdf</span>
 						<span className='text-blue-500'>Pal</span>
@@ -31,8 +31,7 @@ export default function Navbar() {
 							<div className='bg-white rounded-md transition shadow-lg p-3 absolute right-0 mt-2 text-sm'>
 								{session && session.user ? (
 									<div className='flex flex-col gap-2'>
-										<Link href='/dashboard/profile'>Profile</Link>
-										<Link href='/dashboard/upgrade'>Upgrade</Link>
+										<Link href='/dashboard'>Dashboard</Link>
 										<Link href='/api/auth/signout'>Sign Out</Link>
 									</div>
 								) : (
