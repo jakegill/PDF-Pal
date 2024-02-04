@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 	});
 
 	//format messages for openai api:
-	const formattedMessages = previouslySentMessages.map((message) => ({
+	const formattedMessages: any = previouslySentMessages.map((message) => ({
 		role: message.isUserMessage ? ("user" as const) : ("assistant" as const),
 		content: message.text,
 	}));
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
 		\n----------------\n
 		
 		PREVIOUS CONVERSATION:
-		${formattedMessages.map((message) => {
+		${formattedMessages.map((message: any) => {
 			if (message.role === "user") return `User: ${message.content}\n`;
 			return `Assistant: ${message.content}\n`;
 		})}

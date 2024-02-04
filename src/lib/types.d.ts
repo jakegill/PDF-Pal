@@ -34,10 +34,10 @@ interface Message {
 	id: string;
 	text: string;
 	isUserMessage: boolean;
+	createdAt: Date;
+	updatedAt: Date;
 	userId: string;
 	fileId: string;
-	createdAt: string;
-	updatedAt: string;
 }
 
 type ChatStream = {
