@@ -12,3 +12,4 @@ export async function registerUser(user: Omit<User, "id" | "emailVerified" | "im
     });
     return result;
 }
+

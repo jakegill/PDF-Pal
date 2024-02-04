@@ -10,8 +10,10 @@ export default function ChatInput() {
 	return (
 		<form
 			onSubmit={(e) => {
-				e.preventDefault();
-				addMessage();
+				if (!isLoading) {
+					e.preventDefault();
+					addMessage();
+				}
 			}}className='p-[2px] flex items-center absolute left-4 bottom-4 w-[92vw] md:w-[38vw] bg-white shadow-md border-zinc-300 border-[0.5px] md:h-[6vh]'
 		>
 			<input
@@ -20,7 +22,7 @@ export default function ChatInput() {
 				type='text'
 				autoFocus
 				onKeyDown={(e) => {
-					if (e.key === "Enter" && !e.shiftKey) {
+					if (e.key === "Enter" && !e.shiftKey && !isLoading) {
 						e.preventDefault();
 						addMessage();
 					}

@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import type { ChatStream, ChatProviderProps, Message } from "@/lib/types";
 import { getMessages } from "@/lib/messages";
+import { set } from "zod";
 
 export const ChatContext = createContext<ChatStream>({
 	addMessage: () => {},
@@ -19,6 +20,7 @@ export const ChatContextProvider = ({
 	const [message, setMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [prevMessages, setPrevMessages] = useState<Message[]>([]);
+	const [messageCounter, setMessageCounter] = useState<number>(0);
 
 	useEffect(() => {
 		const fetchPrevMessages = async () => {
@@ -47,6 +49,7 @@ export const ChatContextProvider = ({
 			return response.body;
 		},
 		onMutate: async ({ message }) => {
+			setIsLoading(true);
 			if (message.trim()) {
 				setPrevMessages((currentMessages) => [
 					{
@@ -62,7 +65,7 @@ export const ChatContextProvider = ({
 				]);
 				setPrevMessages((currentMessages) => [
 					{
-						id: "ai-temp-response",
+						id: `ai-response-${messageCounter}`,
 						text: "Thinking...",
 						isUserMessage: false,
 						userId: "",
@@ -85,9 +88,15 @@ export const ChatContextProvider = ({
 				done = doneReading;
 				const chunk = decoder.decode(value, { stream: true });
 				accResponse += chunk;
-				setPrevMessages(prev => prev.map(msg => msg.id === 'ai-temp-response' ? { ...msg, text: accResponse } : msg));
+				setPrevMessages(prev => prev.map(msg => msg.id === `ai-response-${messageCounter}` ? { ...msg, text: accResponse } : msg));
 			}
+			setMessageCounter(messageCounter + 1);
+			setIsLoading(false);
 		},
+		onError: (error) => {
+			console.log(error);
+			setIsLoading(false);
+		}
 	});
 
 	const addMessage = () => {

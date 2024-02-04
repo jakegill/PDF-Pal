@@ -7,7 +7,7 @@ import { PineconeStore } from "@langchain/pinecone";
 import { pinecone } from "@/lib/pinecone";
 import { openai } from "@/lib/openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/config/auth.config";
 
 export async function POST(request: NextRequest) {
 	const session = await getServerSession(authOptions);

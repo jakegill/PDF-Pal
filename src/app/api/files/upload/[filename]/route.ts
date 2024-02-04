@@ -5,7 +5,7 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { pinecone } from "@/lib/pinecone";
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "@/config/auth.config";
 
 //aws endpoint https://z5tc4i45mf.execute-api.us-east-1.amazonaws.com/second/pdf-pal/{filename.pdf}
 

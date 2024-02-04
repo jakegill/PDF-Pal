@@ -6,13 +6,12 @@ export async function GET(
 	{ params }: { params: { fileId: string } }
 ) {
 	const fileId = params.fileId;
-    console.log(fileId)
 	try {
 		const messages = await prisma.message.findMany({
 			where: {
 				fileId,
 			},
-			take: 12,
+			take: 18,
 			orderBy: {
 				createdAt: "desc",
 			},
