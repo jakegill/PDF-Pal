@@ -1,3 +1,4 @@
+// @ts-ignore
 import { User } from "@prisma/client";
 
 declare module "next-auth" {
@@ -43,7 +44,7 @@ interface Message {
 interface OpenAIFormat {
 	role: string;
 	content: string;
-	
+
 }
 
 type ChatStream = {
