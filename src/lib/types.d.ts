@@ -40,6 +40,12 @@ interface Message {
 	fileId: string;
 }
 
+interface OpenAIFormat {
+	role: string;
+	content: string;
+	
+}
+
 type ChatStream = {
 	addMessage: () => void;
 	message: string;
