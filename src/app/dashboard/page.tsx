@@ -14,7 +14,7 @@ export default function Dashboard() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [files, setFiles] = useState<PdfFile[]>([]);
 	const session = useSession();
-
+	console.log(session);
 	//Get all of the user's files
 	useEffect(() => {
 		setIsLoading(true);
@@ -24,7 +24,6 @@ export default function Dashboard() {
 			});
 			setIsLoading(false);
 		} 
-
 	}, [session.data]);
 
 	//delete file callback

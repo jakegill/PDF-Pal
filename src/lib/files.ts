@@ -7,7 +7,7 @@ export async function getFiles(userId: string) {
         const session = await getServerSession(authOptions);
         if (session?.user.id !== userId) throw new Error('Unauthorized');
         
-        const res = await fetch(`http://localhost:3000/api/files/user/${userId}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/files/user/${userId}`)
         if (res.ok) {
             const data = await res.json();
             return data
@@ -21,7 +21,7 @@ export async function getFiles(userId: string) {
 
 export async function deleteFile(fileId: string) {
     try {
-        const res = await fetch(`http://localhost:3000/api/files/${fileId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/files/${fileId}`, {
             method: 'DELETE',
             })
         if (res.ok) {
