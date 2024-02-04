@@ -52,27 +52,27 @@ export const ChatContextProvider = ({
 		},
 		onMutate: async ({ message }) => {
 			if (message.trim()) {
-				setPrevMessages((currentMessages) => [
+				setPrevMessages((currentMessages: Message[]) => [
 					{
 						id: Date.now().toString(),
 						text: message,
 						isUserMessage: true,
 						userId: "",
 						fileId: "",
-						createdAt: "",
-						updatedAt: "",
+						createdAt: new Date,
+						updatedAt: new Date,
 					},
 					...currentMessages,
 				]);
-				setPrevMessages((currentMessages) => [
+				setPrevMessages((currentMessages: Message[]) => [
 					{
 						id: `ai-response-${messageCounter}`,
 						text: "Thinking...",
 						isUserMessage: false,
 						userId: "",
 						fileId: "",
-						createdAt: "",
-						updatedAt: "",
+						createdAt: new Date,
+						updatedAt: new Date,
 					},
 					...currentMessages,
 				]);
@@ -85,6 +85,7 @@ export const ChatContextProvider = ({
 			let done = false;
 			let accResponse = "";
 			while (!done) {
+				// @ts-ignore
 				const { value, done: doneReading } = await reader.read();
 				done = doneReading;
 				const chunk = decoder.decode(value, { stream: true });
@@ -117,5 +118,6 @@ export const ChatContextProvider = ({
 		prevMessages,
 	};
 
+	// @ts-ignore
 	return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
