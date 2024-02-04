@@ -3,7 +3,6 @@ import { createContext, useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import type { ChatStream, ChatProviderProps, Message } from "@/lib/types";
 import { getMessages } from "@/lib/messages";
-import { set } from "zod";
 
 export const ChatContext = createContext<ChatStream>({
 	addMessage: () => {},

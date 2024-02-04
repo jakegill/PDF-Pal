@@ -3,7 +3,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -11,6 +11,7 @@ export default function PdfView() {
 	const [fileUrl, setFileUrl] = useState<string | null>(null);
 	const [currentPageNumber, setCurrentPageNumber] = useState(1);
 	const [numPages, setNumPages] = useState<number>(0);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const getUrl = async (fileId: string) => {
 		try {
@@ -25,9 +26,11 @@ export default function PdfView() {
 	};
 
 	useEffect(() => {
+		setIsLoading(true);
 		(async () => {
 			const fileId = window.location.pathname.split("/")[2];
 			await getUrl(fileId);
+			setIsLoading(false);
 		})();
 	}, []);
 
@@ -69,13 +72,25 @@ export default function PdfView() {
 					/>
 				</div>
 			</section>
-			<Document
-				className='max-h-full'
-				file={fileUrl}
-				onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-			>
-				<Page className='shadow-md max-h-full' pageNumber={currentPageNumber} />
-			</Document>
+			{isLoading ? (
+				<div className='h-[68vh] flex items-center'>
+					<div className="flex flex-col items-center gap-2 justify-center">
+						<Loader2 className='animate-spin h-[20vh] w-[20vw] md:h-[6vh] md:w-[6vw] md:mt-[10vh] text-blue-600' />
+						<p className='text-sm text-zinc-600'>Rendering your PDF.</p>
+					</div>
+				</div>
+			) : (
+				<Document
+					className='max-h-full'
+					file={fileUrl}
+					onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+				>
+					<Page
+						className='shadow-md max-h-full'
+						pageNumber={currentPageNumber}
+					/>
+				</Document>
+			)}
 		</div>
 	);
 }

@@ -1,14 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import FileCard from "@/components/FileCard";
 import UploadDropzone from "@/components/UploadDropzone";
 import { getFiles } from "@/lib/files";
 import type { PdfFile } from "@/lib/types";
 
-//TODO add a loading state for getting users files & uploading files...
 
 export default function Dashboard() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -18,11 +17,14 @@ export default function Dashboard() {
 
 	//Get all of the user's files
 	useEffect(() => {
+		setIsLoading(true);
 		if (session.data) {
 			getFiles(session.data.user.id).then((data) => {
 				setFiles(data);
 			});
-		}
+			setIsLoading(false);
+		} 
+
 	}, [session.data]);
 
 	//delete file callback
@@ -53,7 +55,7 @@ export default function Dashboard() {
 						))
 					) : (
 						<div className='w-full h-full flex items-center justify-center md:col-span-3'>
-							No Files
+							<Loader2 className={"text-blue-600 animate-spin h-[20vh] w-[20vw] md:h-[10vh] md:w-[10vw] md:mt-[10vh]"}/>
 						</div>
 					)}
 				</main>

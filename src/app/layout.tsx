@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Albert_Sans } from "next/font/google";
 import { Providers } from "@/app/providers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const albertSans = Albert_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "PDF Pal",
-	description: "Virtual assist that answers questions about your documents.",
+	description: "Virtual assistant that answers questions about your documents.",
 };
 
 export default function RootLayout({
@@ -17,7 +19,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
+			<body className={albertSans.className}>
 				<Providers>{children}</Providers>
 			</body>
 		</html>
