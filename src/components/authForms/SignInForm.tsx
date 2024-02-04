@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
 	email: z.string().email("Please enter a valid email address."),
@@ -18,7 +20,8 @@ const loginSchema = z.object({
 type InputType = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
-
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 
 	const {
@@ -29,6 +32,7 @@ export default function LoginForm() {
 
 	const loginUser: SubmitHandler<InputType> = async (formData) => {
 		try {
+			setIsLoading(true);
 			const res = await signIn("credentials", {
 				redirect: false,
 				username: formData.email,
@@ -38,7 +42,8 @@ export default function LoginForm() {
 			if (res?.ok) {
 				router.push("/dashboard");
 			}
-
+			setIsLoading(false);
+			setError("Invalid email or password.");
 		} catch (error) {
 			console.log(error);
 		}
@@ -49,6 +54,7 @@ export default function LoginForm() {
 			<form
 				className='bg-white shadow-md rounded px-8 pt-6 pb-8 mx-auto'
 				onSubmit={handleSubmit(loginUser)}
+				onClick={() => setError("")}
 			>
 				<div className='mb-3'>
 					<h2 className='text-xl mb-5'>Log in</h2>
@@ -88,12 +94,18 @@ export default function LoginForm() {
 					</div>
 				</div>
 				<div className='flex flex-col gap-2'>
-					<button
-						className=''
-						type='submit'
-					>
-						Sign in
-					</button>
+					{isLoading ? (
+						<div className='flex justify-center'>
+							<Loader2 className='animate-spin text-blue-500' />
+						</div>
+					) : (
+						<button
+							className='bg-blue-700 py-2 text-white transition hover:bg-blue-800 hover:shadow-sm'
+							type='submit'
+						>
+							Sign in
+						</button>
+					)}
 					<div className='flex gap-2'>
 						<p className='text-sm text-zinc-700'>Dont have an account?</p>
 						<Link
@@ -103,8 +115,10 @@ export default function LoginForm() {
 							Sign up
 						</Link>
 					</div>
+					{error !== '' ? (<div className="text-red-500">{error}</div>) : null}
 				</div>
 			</form>
+			
 		</div>
 	);
 }

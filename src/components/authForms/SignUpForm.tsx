@@ -6,6 +6,8 @@ import type { SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import { registerUser } from "@/lib/auth.server";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const registerSchema = z
 	.object({
@@ -37,8 +39,9 @@ const registerSchema = z
 type InputType = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
-
 	const router = useRouter();
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const {
 		register,
@@ -49,19 +52,23 @@ export default function RegisterForm() {
 	const saveUser: SubmitHandler<InputType> = async (formData) => {
 		const { confirmPassword, ...user } = formData;
 		try {
+			setIsLoading(true);
 			const res = await registerUser(user);
 			if (res?.id) {
 				router.push("/auth/signin");
 			}
-		} catch (error) {
+			setIsLoading(false);
+		} catch (error: any) {
 			console.log(error);
+			setError("Invalid email or password.");
+			setIsLoading(false);
 		}
 	};
 
 	return (
 		<div className='w-full max-w-md min-w-xs mx-auto my-10'>
 			<form
-				className='bg-white shadow-md rounded px-8 pt-6 pb-8 mx-auto'
+				className='bg-white md:shadow-md rounded px-8 pt-6 pb-8 mx-auto'
 				onSubmit={handleSubmit(saveUser)}
 			>
 				<div className='mb-3'>
@@ -166,12 +173,18 @@ export default function RegisterForm() {
 					</div>
 				</div>
 				<div className='flex flex-col gap-2'>
-					<button
-                        className=''
-						type='submit'
-					>
-						Create Account
-					</button>
+					{isLoading ? (
+						<div className='flex justify-center'>
+							<Loader2 className='animate-spin text-blue-500' />
+						</div>
+					) : (
+						<button
+							className='bg-blue-700 py-2 text-white transition hover:bg-blue-800 hover:shadow-sm'
+							type='submit'
+						>
+							Create Account
+						</button>
+					)}
 					<div className='flex gap-2'>
 						<p className='text-sm text-zinc-700'>Already have an account?</p>
 						<Link
@@ -184,5 +197,6 @@ export default function RegisterForm() {
 				</div>
 			</form>
 		</div>
+		
 	);
 }

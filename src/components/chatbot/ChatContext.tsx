@@ -24,11 +24,14 @@ export const ChatContextProvider = ({
 	useEffect(() => {
 		const fetchPrevMessages = async () => {
 			try {
+				setIsLoading(true);
 				const fetchedMessages = await getMessages(fileId);
 				setPrevMessages(fetchedMessages);
 			} catch (error) {
 				console.log(error);
+				setIsLoading(false);
 			}
+			setIsLoading(false);
 		};
 		fetchPrevMessages();
 	}, []);
@@ -48,7 +51,6 @@ export const ChatContextProvider = ({
 			return response.body;
 		},
 		onMutate: async ({ message }) => {
-			setIsLoading(true);
 			if (message.trim()) {
 				setPrevMessages((currentMessages) => [
 					{
@@ -90,11 +92,9 @@ export const ChatContextProvider = ({
 				setPrevMessages(prev => prev.map(msg => msg.id === `ai-response-${messageCounter}` ? { ...msg, text: accResponse } : msg));
 			}
 			setMessageCounter(messageCounter + 1);
-			setIsLoading(false);
 		},
 		onError: (error) => {
 			console.log(error);
-			setIsLoading(false);
 		}
 	});
 

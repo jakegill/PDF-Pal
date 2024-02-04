@@ -26,7 +26,7 @@ export default function FileCard({ file, onDelete }: FileCardProps) {
 	};
 
 	const handleCardClick = (event: any) => {
-		if (!event.target.classList.contains("delete-btn")) {
+		if (!event.target.id.includes("delete-btn")) {
 			window.location.href = `/dashboard/${file.id}`;
 		}
 	};
@@ -44,7 +44,8 @@ export default function FileCard({ file, onDelete }: FileCardProps) {
 				<p>{file.uploadStatus}</p>
 				<div
 					onClick={handleDeleteClick}
-					className='delete-btn w-[15vw] md:w-[5vw] p-1 bg-red-100 hover:bg-red-200 transition flex justify-center items-center rounded-md'
+					id="delete-btn"
+					className='w-[15vw] md:w-[5vw] p-1 bg-red-100 hover:bg-red-200 transition flex justify-center items-center rounded-md'
 				>
 					<Trash2 className='text-red-600' />
 				</div>

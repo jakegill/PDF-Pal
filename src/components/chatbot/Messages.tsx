@@ -4,7 +4,7 @@ import { ChatContext } from "@/components/chatbot/ChatContext";
 import { Loader2 } from "lucide-react";
 
 export default function Messages() {
-	const { prevMessages } = useContext(ChatContext);
+	const { prevMessages, isLoading } = useContext(ChatContext);
 	const bottomRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -14,7 +14,7 @@ export default function Messages() {
 	return (
 		<div className='flex flex-col-reverse overflow-y-auto h-[78vh] md:h-[80vh] md:w-[40vw]'>
 			<div ref={bottomRef} />
-			{prevMessages.length === 0 ? (
+			{isLoading ? (
 				<div className='h-[78vh] md:h-[80vh] md:w-[40vw] flex items-center justify-center'>
 					<div className='flex flex-col items-center justify-center'>
 						<Loader2 className='animate-spin h-[20vh] w-[20vw] md:h-[6vh] md:w-[6vw] md:mt-[10vh] text-blue-600 ' />

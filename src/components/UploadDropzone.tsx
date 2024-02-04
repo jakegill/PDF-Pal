@@ -1,6 +1,6 @@
 "use client";
 import Dropzone from "react-dropzone";
-import { File } from "lucide-react";
+import { File, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 export default function UploadDropzone() {
@@ -10,7 +10,6 @@ export default function UploadDropzone() {
 		if (acceptedFiles.length > 0) {
 			const file = acceptedFiles[0];
 			setIsLoading(true);
-			console.log(file);
 			try {
 				await fetch(`/api/files/upload/${file.name}`, {
 					method: "POST",
@@ -20,12 +19,14 @@ export default function UploadDropzone() {
 				console.error("Error sending file to backend.", error);
 			} finally {
 				setIsLoading(false);
+				window.location.reload();
 			}
 		}
 	};
 
 	return (
 		<Dropzone
+			disabled={isLoading}
 			multiple={false}
 			onDrop={(acceptedFile) => {
 				handleDrop(acceptedFile);
@@ -50,6 +51,12 @@ export default function UploadDropzone() {
 								<p className='text-zinc-500 truncate'>
 									{acceptedFiles[0].name}
 								</p>
+							</div>
+						) : null}
+						{isLoading ? (
+							<div className='flex flex-col items-center justify-center'>
+								<div>Uploading PDF...</div>
+								<Loader2 className='animate-spin text-blue-500 h-[4vh] w-[4vw]' />
 							</div>
 						) : null}
 					</label>

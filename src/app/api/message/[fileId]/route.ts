@@ -16,13 +16,21 @@ export async function GET(
 				createdAt: "desc",
 			},
 		});
-		if (messages) {
-            return NextResponse.json(messages);
-		}
+		return new Response(JSON.stringify(messages), {
+			status: 200,
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 	} catch (error) {
-		return {
-			status: 500,
-            body: error,
-		};
+		return new Response(
+			JSON.stringify({ error: "An error occurred while fetching messages." }),
+			{
+				status: 500,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
 	}
 }

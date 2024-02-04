@@ -48,7 +48,7 @@ export default function Dashboard() {
 					</button>
 				</div>
 
-				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
+				<main className='h-[67vh] md:h-[75v] grid grid-cols-1 grid-rows-auto md:grid-cols-3 md:grid-rows-[16vh] gap-y-3 md:gap-x-3 overflow-y-auto'>
 					{files && files.length > 0 ? (
 						files.map((file) => (
 							<FileCard key={file.id} file={file} onDelete={handleFileDelete} />
