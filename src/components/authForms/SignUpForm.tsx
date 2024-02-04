@@ -53,6 +53,7 @@ export default function RegisterForm() {
 		const { confirmPassword, ...user } = formData;
 		try {
 			setIsLoading(true);
+			// @ts-ignore
 			const res = await registerUser(user);
 			if (res?.id) {
 				router.push("/auth/signin");
